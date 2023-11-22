@@ -12,7 +12,7 @@
 		6A79BE9E2B0DE5A30022888A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A79BE9C2B0DE5A30022888A /* Main.storyboard */; };
 		6A79BEA02B0DE5A40022888A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A79BE9F2B0DE5A40022888A /* Assets.xcassets */; };
 		6A79BEA32B0DE5A40022888A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A79BEA12B0DE5A40022888A /* LaunchScreen.storyboard */; };
-		6A79BEAC2B0DE5F20022888A /* CurrencyConverterFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 6A79BEAB2B0DE5F20022888A /* CurrencyConverterFeature */; };
+		6A79BEAF2B0E8C7E0022888A /* CurrencyFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 6A79BEAE2B0E8C7E0022888A /* CurrencyFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A79BEAC2B0DE5F20022888A /* CurrencyConverterFeature in Frameworks */,
+				6A79BEAF2B0E8C7E0022888A /* CurrencyFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 			);
 			name = CurrencyConverter;
 			packageProductDependencies = (
-				6A79BEAB2B0DE5F20022888A /* CurrencyConverterFeature */,
+				6A79BEAE2B0E8C7E0022888A /* CurrencyFeature */,
 			);
 			productName = CurrencyConverter;
 			productReference = 6A79BE932B0DE5A30022888A /* CurrencyConverter.app */;
@@ -380,9 +380,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6A79BEAB2B0DE5F20022888A /* CurrencyConverterFeature */ = {
+		6A79BEAE2B0E8C7E0022888A /* CurrencyFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CurrencyConverterFeature;
+			productName = CurrencyFeature;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

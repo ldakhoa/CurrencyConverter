@@ -2,13 +2,13 @@ import Foundation
 import Networking
 
 /// An object provides methods for interacting with the exchange currency data in the remote database.
-protocol RemoteCurrencyConverterRepository {
+protocol RemoteCurrencyRepository {
     /// Get the latest exchange rates available from the Open Exchange Rates API.
     func exchangeRate() async throws -> ExchangeRateResponse
 }
 
 /// An object provides methods for interacting with the exchange currency data in the remote database.
-struct DefaultRemoteCurrencyConverterRepository: RemoteCurrencyConverterRepository {
+struct DefaultRemoteCurrencyRepository: RemoteCurrencyRepository {
 
     // MARK: Dependencies
 
@@ -31,7 +31,7 @@ struct DefaultRemoteCurrencyConverterRepository: RemoteCurrencyConverterReposito
 
 // MARK: - Endpoint
 
-extension DefaultRemoteCurrencyConverterRepository {
+extension DefaultRemoteCurrencyRepository {
     /// A type that represents the available API endpoint.
     enum API: Networking.Request {
         /// Git a JSON list of all currency symbols avaible from the Open Exchange Rates API.

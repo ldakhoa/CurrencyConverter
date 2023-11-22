@@ -1,6 +1,8 @@
 import Foundation
 
-protocol CurrencyConverterCoordinating: AnyObject {}
+protocol CurrencyConverterCoordinating: AnyObject {
+    func presentCurrencySelector()
+}
 
 protocol CurrencyConverterViewable: AnyObject {
     /// Reload all data.
@@ -20,7 +22,7 @@ protocol CurrencyConverterViewable: AnyObject {
 final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     // MARK: Dependencies
 
-    let currencyConverterUseCase: CurrencyConverterUseCase
+    let currencyUseCase: CurrencyUseCase
 
     weak var coordinator: CurrencyConverterCoordinating?
 
@@ -36,8 +38,8 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
 
     // MARK: Init
 
-    init(currencyConverterUseCase: CurrencyConverterUseCase = DefaultCurrencyConverterUseCase()) {
-        self.currencyConverterUseCase = currencyConverterUseCase
+    init(currencyUseCase: CurrencyUseCase = DefaultCurrencyUseCase()) {
+        self.currencyUseCase = currencyUseCase
     }
 
     // MARK: Deinit
@@ -65,13 +67,17 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: item)
     }
 
+    func didTappedCurrencySelector() {
+        coordinator?.presentCurrencySelector()
+    }
+
     // MARK: Side Effects
 
     func reloadData() {
         reloadDataTask?.cancel()
         reloadDataTask = Task {
             do {
-                let result = try await currencyConverterUseCase.exchangeRate()
+                let result = try await currencyUseCase.exchangeRate()
                 print(result)
                 print(result.rates)
             } catch {

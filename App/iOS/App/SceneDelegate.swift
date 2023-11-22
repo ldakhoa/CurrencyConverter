@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CurrencyConverterFeature
+import CurrencyFeature
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: UIWindowSceneDelegate

@@ -4,6 +4,7 @@ import Toast
 
 protocol CurrencyConverterPresentable: AnyObject {
     func amountDidChange(_ value: String?)
+    func didTappedCurrencySelector()
 }
 
 final class CurrencyConverterViewController: UIViewController, CurrencyConverterViewable {
@@ -27,6 +28,11 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     private(set) lazy var selectCurrencyButton: UIButton = {
         let view = UIButton(type: .system)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.addTarget(
+            self,
+            action: #selector(onCurrencySelector),
+            for: .touchUpInside
+        )
         view.setTitle("USD", for: .normal)
         view.tintColor = .label
 
@@ -145,6 +151,11 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     private func onAmountChanged(_ textField: UITextField) {
         presenter.amountDidChange(textField.text)
     }
+
+    @objc
+    private func onCurrencySelector() {
+        presenter.didTappedCurrencySelector()
+    }
 }
 
 extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDelegate {
@@ -156,5 +167,11 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
         let cell = UITableViewCell()
         cell.backgroundColor = .red
         return cell
+    }
+}
+
+extension CurrencyConverterViewController: CurrencySelectorListener {
+    func didSelectCurrency() {
+        print("Hello")
     }
 }

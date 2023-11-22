@@ -9,9 +9,9 @@ let package = Package(
 		.iOS(.v13)
 	],
 	products: [
-		.library(name: "CurrencyConverterFeature", targets: ["CurrencyConverterFeature"]),
-        .library(name: "Networking", targets: ["Networking"]),
-        .library(name: "Common", targets: ["Common"])
+        .singleTargetLibrary("CurrencyFeature"),
+        .singleTargetLibrary("Networking"),
+        .singleTargetLibrary("Common"),
 	],
     dependencies: [
         .package(url: "https://github.com/realm/SwiftLint", exact: "0.52.3"),
@@ -21,7 +21,7 @@ let package = Package(
         .target(name: "Common"),
 
 		.target(
-			name: "CurrencyConverterFeature",
+			name: "CurrencyFeature",
 			dependencies: [
                 "Common",
                 "Networking",
@@ -30,8 +30,8 @@ let package = Package(
             ]
 		),
 		.testTarget(
-			name: "CurrencyConverterFeatureTests",
-			dependencies: ["CurrencyConverterFeature"]
+			name: "CurrencyFeatureTests",
+			dependencies: ["CurrencyFeature"]
 		),
 
         .target(
@@ -55,4 +55,13 @@ package.targets = package.targets.map { target in
     plugins.append(.plugin(name: "SwiftLintPlugin", package: "SwiftLint"))
     target.plugins = plugins
     return target
+}
+
+extension Product {
+    /// Creates a library product to allow clients that declare a dependency on this package to use the package’s functionality.
+    /// - Parameter name: The name of the library product.
+    /// - Returns: A Product instance.
+    static func singleTargetLibrary(_ name: String) -> Product {
+        .library(name: name, targets: [name])
+    }
 }
