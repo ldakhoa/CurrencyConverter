@@ -29,7 +29,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// - Parameter window: The backdrop for your app’s user interface and the object that dispatches events to your views.
     private func bootstrap(from window: UIWindow) {
         self.window = window
-        window.rootViewController = CurrencyConverterViewController()
+        let currencyConverterBuilder: CurrencyConverterBuilder = CurrencyConverterBuilder()
+        let viewController = currencyConverterBuilder.build()
+        window.rootViewController = viewController
         window.makeKeyAndVisible()
     }
 }

@@ -10,15 +10,24 @@ let package = Package(
 	],
 	products: [
 		.library(name: "CurrencyConverterFeature", targets: ["CurrencyConverterFeature"]),
-        .library(name: "Networking", targets: ["Networking"])
+        .library(name: "Networking", targets: ["Networking"]),
+        .library(name: "Common", targets: ["Common"])
 	],
     dependencies: [
-        .package(url: "https://github.com/realm/SwiftLint", exact: "0.52.3")
+        .package(url: "https://github.com/realm/SwiftLint", exact: "0.52.3"),
+        .package(url: "https://github.com/BastiaanJansen/toast-swift", from: "2.0.0")
     ],
 	targets: [
+        .target(name: "Common"),
+
 		.target(
 			name: "CurrencyConverterFeature",
-			dependencies: []
+			dependencies: [
+                "Common",
+                "Networking",
+                "UIComponentKit",
+                .product(name: "Toast", package: "toast-swift"),
+            ]
 		),
 		.testTarget(
 			name: "CurrencyConverterFeatureTests",
@@ -32,7 +41,11 @@ let package = Package(
         .testTarget(
             name: "NetworkingTests",
             dependencies: ["Networking"]
-        )
+        ),
+
+        .target(
+            name: "UIComponentKit"
+        ),
 	]
 )
 

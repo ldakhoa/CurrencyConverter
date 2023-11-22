@@ -3,4 +3,100 @@
    uuid = "27198BF8-416D-41F3-80B1-E6B83AC47E7C"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "exchangeRate()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52 - 9e274cf52e7e5730"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for CurrencyConverterFeature.DefaultRemoteCurrencyConverterRepository.exchangeRate() async throws -&gt; CurrencyConverterFeature.ExchangeRateResponse"
+                  moduleName = "CurrencyConverter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/khoale/code/play/CurrencyConverter/Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52 - 3237ee9b38fe6104"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for CurrencyConverterFeature.DefaultRemoteCurrencyConverterRepository.exchangeRate() async throws -&gt; CurrencyConverterFeature.ExchangeRateResponse"
+                  moduleName = "CurrencyConverter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/khoale/code/play/CurrencyConverter/Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52 - 4d07c6274999ab36"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for CurrencyConverterFeature.DefaultRemoteCurrencyConverterRepository.exchangeRate() async throws -&gt; CurrencyConverterFeature.ExchangeRateResponse"
+                  moduleName = "CurrencyConverter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/khoale/code/play/CurrencyConverter/Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52 - d597bb4ea6744d35"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for CurrencyConverterFeature.DefaultRemoteCurrencyConverterRepository.exchangeRate() async throws -&gt; CurrencyConverterFeature.ExchangeRateResponse"
+                  moduleName = "CurrencyConverter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/khoale/code/play/CurrencyConverter/Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BD39633-1FB4-4887-8AA8-6DBC8DD375F1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Packages/Sources/CurrencyConverterFeature/CurrencyConverterPresenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "reloadData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
