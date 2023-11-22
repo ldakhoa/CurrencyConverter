@@ -36,20 +36,10 @@ let package = Package(
 	]
 )
 
-//// Inject base plugins into each target
-//package.targets = package.targets.map { target in
-//    var plugins = target.plugins ?? []
-//    plugins.append(.plugin(name: "SwiftLintPlugin", package: "SwiftLint"))
-//    target.plugins = plugins
-//    return target
-//}
-//
-//// Concurrency safety
-//for target in package.targets {
-//	target.swiftSettings = [
-//		.unsafeFlags([
-//      		"-Xfrontend", "-enable-actor-data-race-checks",
-//      		"-Xfrontend", "-warn-concurrency",
-//    	])
-//	]
-//}
+// Inject base plugins into each target
+package.targets = package.targets.map { target in
+    var plugins = target.plugins ?? []
+    plugins.append(.plugin(name: "SwiftLintPlugin", package: "SwiftLint"))
+    target.plugins = plugins
+    return target
+}
