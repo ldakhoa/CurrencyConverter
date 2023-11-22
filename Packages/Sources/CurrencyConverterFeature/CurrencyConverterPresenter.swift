@@ -32,7 +32,7 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     private(set) var reloadDataTask: Task<Void, Error>?
 
     /// An asynchronous task that reload all data after a specific time.
-    private(set) var pendingReloadDatatWorkItem: DispatchWorkItem?
+    private(set) var pendingReloadDataWorkItem: DispatchWorkItem?
 
     // MARK: Init
 
@@ -50,17 +50,17 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
 
     func amountDidChange(_ value: String?) {
         // Cancel the pending item.
-        pendingReloadDatatWorkItem?.cancel()
+        pendingReloadDataWorkItem?.cancel()
         // Cancel the in-progress request.
         reloadDataTask?.cancel()
         // Wrap a new task in an item.
         let item = DispatchWorkItem(qos: .userInteractive) { [weak self] in
             guard let self else { return }
             // Send a new request to reload data
-            self.reloadData()
+//            self.reloadData()
         }
         // Keep a reference to the pending task for canceling if needed.
-        pendingReloadDatatWorkItem = item
+        pendingReloadDataWorkItem = item
         // Schedule to execute the task after a specific time.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: item)
     }
@@ -68,16 +68,15 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     // MARK: Side Effects
 
     func reloadData() {
-        print("Running?")
-//        reloadDataTask?.cancel()
-//        reloadDataTask = Task {
-//            do {
-//                let result = try await currencyConverterUseCase.exchangeRate()
-//                print(result)
-//                print(result.rates)
-//            } catch {
-//                print(error)
-//            }
-//        }
+        reloadDataTask?.cancel()
+        reloadDataTask = Task {
+            do {
+                let result = try await currencyConverterUseCase.exchangeRate()
+                print(result)
+                print(result.rates)
+            } catch {
+                print(error)
+            }
+        }
     }
 }
