@@ -95,7 +95,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
 
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(amountTextField)
         view.addSubview(selectCurrencyButton)
         view.addSubview(currencyConversionsTableView)
@@ -116,6 +116,9 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
             currencyConversionsTableView.leadingAnchor.constraint(equalTo: amountTextField.leadingAnchor),
             currencyConversionsTableView.trailingAnchor.constraint(equalTo: amountTextField.trailingAnchor),
             currencyConversionsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 
@@ -170,8 +173,10 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
     }
 }
 
+// MARK: - CurrencySelectorListener
+
 extension CurrencyConverterViewController: CurrencySelectorListener {
-    func didSelectCurrency() {
-        print("Hello")
+    func didSelect(currency: ExchangeCurrency) {
+        print("Selected \(currency.name)")
     }
 }

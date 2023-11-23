@@ -5,6 +5,9 @@ import Networking
 protocol RemoteCurrencyRepository {
     /// Get the latest exchange rates available from the Open Exchange Rates API.
     func exchangeRate() async throws -> ExchangeRateResponse
+
+    /// Get a list of currency symbols.
+    func currencies() async throws -> [ExchangeCurrency]
 }
 
 /// An object provides methods for interacting with the exchange currency data in the remote database.
@@ -26,6 +29,14 @@ struct DefaultRemoteCurrencyRepository: RemoteCurrencyRepository {
     func exchangeRate() async throws -> ExchangeRateResponse {
         let request = API.latestJSON
         return try await session.data(for: request, decoder: JSONDecoder())
+    }
+
+    func currencies() async throws -> [ExchangeCurrency] {
+        let response: ExchangeCurrencyResponse = try await session.data(
+            for: API.currencies,
+            decoder: JSONDecoder()
+        )
+        return response.map { ExchangeCurrency(name: $0.value, symbol: $0.key) }
     }
 }
 

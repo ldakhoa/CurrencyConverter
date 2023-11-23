@@ -7,6 +7,7 @@ extension CurrencyConverterViewController: CurrencyConverterCoordinating {
         presenter.coordinator = viewController
         presenter.view = viewController
         presenter.listener = self
-        present(viewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController, animated: true)
     }
 }

@@ -6,6 +6,9 @@ import Foundation
 protocol CurrencyUseCase {
     /// Get the latest exchange rates available from the Open Exchange Rates API.
     func exchangeRate() async throws -> ExchangeRateResponse
+
+    /// Get a list of currency symbols.
+    func currencies() async throws -> [ExchangeCurrency]
 }
 
 /// An object that manages the weather data and apply business rules to achive a use case.
@@ -27,5 +30,9 @@ struct DefaultCurrencyUseCase: CurrencyUseCase {
 
     func exchangeRate() async throws -> ExchangeRateResponse {
         try await remoteCurrencyRepository.exchangeRate()
+    }
+
+    func currencies() async throws -> [ExchangeCurrency] {
+        try await remoteCurrencyRepository.currencies()
     }
 }
