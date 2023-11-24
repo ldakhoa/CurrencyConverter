@@ -43,9 +43,9 @@ final class CurrencySelectorCell: UITableViewCell {
 
     // MARK: Side Effect
 
-    func configure(withCurrency currency: ExchangeCurrency) {
-        nameLabel.text = currency.name
-        symbolLabel.text = currency.symbol
+    func configure(withCurrencyRate currencyRate: ExchangeCurrencyRate) {
+        nameLabel.text = currencyRate.name
+        symbolLabel.text = currencyRate.symbol
     }
 
     private func setupLayout() {

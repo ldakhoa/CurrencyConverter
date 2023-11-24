@@ -1,5 +1,4 @@
 import UIKit
-import Toast
 
 protocol CurrencySelectorPresentable: AnyObject {
     /// Notify the view is loaded into memory.
@@ -21,7 +20,7 @@ protocol CurrencySelectorPresentable: AnyObject {
     /// Ask for a item that is specified by an index path.
     /// - Parameter indexPath: The index path that specifies the location of an item.
     /// - Returns: The data model of an item.
-    func item(at indexPath: IndexPath) -> ExchangeCurrency
+    func item(at indexPath: IndexPath) -> ExchangeCurrencyRate
 
     /// Notifies that an item was selected at index path.
     func didSelectCurrency(at indexPath: IndexPath)
@@ -52,15 +51,6 @@ final class CurrencySelectorViewController: UIViewController, CurrencySelectorVi
         return controller
     }()
 
-    /// A view that shows that a task is in progress.
-    private(set) lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView()
-        view.hidesWhenStopped = true
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     // MARK: Dependencies
 
     let presenter: CurrencySelectorPresentable
@@ -82,16 +72,12 @@ final class CurrencySelectorViewController: UIViewController, CurrencySelectorVi
         super.loadView()
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
-        view.addSubview(activityIndicatorView)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 
@@ -114,21 +100,6 @@ final class CurrencySelectorViewController: UIViewController, CurrencySelectorVi
     func reloadData() {
         tableView.reloadData()
         UIAccessibility.post(notification: .layoutChanged, argument: nil)
-    }
-
-    func showLoading() {
-        activityIndicatorView.startAnimating()
-    }
-
-    func hideLoading() {
-        activityIndicatorView.stopAnimating()
-    }
-
-    func showError(_ error: Error) {
-        let title = error.localizedDescription
-        let config = ToastConfiguration(attachTo: view)
-        let toast = Toast.text(title, config: config)
-        toast.show(haptic: .error)
     }
 
     // MARK: Side Effects
@@ -171,8 +142,8 @@ extension CurrencySelectorViewController: UITableViewDataSource, UITableViewDele
         ) as? CurrencySelectorCell else {
             return UITableViewCell()
         }
-        let currency: ExchangeCurrency = presenter.item(at: indexPath)
-        cell.configure(withCurrency: currency)
+        let currencyRate: ExchangeCurrencyRate = presenter.item(at: indexPath)
+        cell.configure(withCurrencyRate: currencyRate)
         return cell
     }
 

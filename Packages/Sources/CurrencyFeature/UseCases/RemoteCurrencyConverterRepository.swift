@@ -7,7 +7,7 @@ protocol RemoteCurrencyRepository {
     func exchangeRate() async throws -> ExchangeRateResponse
 
     /// Get a list of currency symbols.
-    func currencies() async throws -> [ExchangeCurrency]
+    func currencies() async throws -> ExchangeCurrencyResponse
 }
 
 /// An object provides methods for interacting with the exchange currency data in the remote database.
@@ -31,12 +31,16 @@ struct DefaultRemoteCurrencyRepository: RemoteCurrencyRepository {
         return try await session.data(for: request, decoder: JSONDecoder())
     }
 
-    func currencies() async throws -> [ExchangeCurrency] {
-        let response: ExchangeCurrencyResponse = try await session.data(
+    func currencies() async throws -> ExchangeCurrencyResponse {
+        try await session.data(
             for: API.currencies,
             decoder: JSONDecoder()
         )
-        return response.map { ExchangeCurrency(name: $0.value, symbol: $0.key) }
+//        let response: ExchangeCurrencyResponse = try await session.data(
+//            for: API.currencies,
+//            decoder: JSONDecoder()
+//        )
+//        return response.map { ExchangeCurrency(name: $0.value, symbol: $0.key) }
     }
 }
 

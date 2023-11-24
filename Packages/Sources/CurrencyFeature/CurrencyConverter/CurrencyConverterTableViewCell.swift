@@ -47,6 +47,11 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
 
     // MARK: Side Effect
 
+    func configure(withCurrencyRate currencyRate: ExchangeCurrencyRate) {
+        amountLabel.text = "\(currencyRate.rate) \(currencyRate.symbol)"
+        nameLabel.text = currencyRate.name
+    }
+
     private func setupLayout() {
         contentView.addSubview(containerStackView)
 

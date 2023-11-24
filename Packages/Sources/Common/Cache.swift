@@ -1,7 +1,11 @@
 import Foundation
 
 /// An object that temporarily stores transient key-value pairs that are subject to eviction when resources are low or expired.
-final class Cache<Key: Hashable, Value> {
+public final class Cache<Key: Hashable, Value> {
+    // MARK: Init
+
+    public init() {}
+
     // MARK: Misc
 
     /// An object that temporarily stores transient key-value pairs that are subject to eviction when resources are low.
@@ -17,7 +21,7 @@ final class Cache<Key: Hashable, Value> {
     ///   - value: The value to be stored in the cache.
     ///   - key: The key with which to associate the value.
     ///   - expirationDate: A date when the value will expire.
-    func insert(
+    public func insert(
         _ value: Value,
         forKey key: Key,
         expiredAt expirationDate: Date? = nil
@@ -36,7 +40,7 @@ final class Cache<Key: Hashable, Value> {
     /// Returns the value associated with a given key.
     /// - Parameter key: The key with which to associate the value.
     /// - Returns: The value associated with `key`, or `nil` if no value is associated with key.
-    func value(forKey key: Key) -> Value? {
+    public func value(forKey key: Key) -> Value? {
         guard let wrappedValue = storage.object(forKey: WrappedKey(key: key)) else {
             return nil
         }
@@ -53,7 +57,7 @@ final class Cache<Key: Hashable, Value> {
 
     /// Removes the value of the specified key in the cache.
     /// - Parameter key: The key with which to associate the value.
-    func removeValue(forKey key: Key) {
+    public func removeValue(forKey key: Key) {
         storage.removeObject(forKey: WrappedKey(key: key))
     }
 }

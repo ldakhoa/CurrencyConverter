@@ -8,7 +8,7 @@ protocol CurrencyUseCase {
     func exchangeRate() async throws -> ExchangeRateResponse
 
     /// Get a list of currency symbols.
-    func currencies() async throws -> [ExchangeCurrency]
+    func currencies() async throws -> ExchangeCurrencyResponse
 }
 
 /// An object that manages the weather data and apply business rules to achive a use case.
@@ -32,7 +32,7 @@ struct DefaultCurrencyUseCase: CurrencyUseCase {
         try await remoteCurrencyRepository.exchangeRate()
     }
 
-    func currencies() async throws -> [ExchangeCurrency] {
+    func currencies() async throws -> ExchangeCurrencyResponse {
         try await remoteCurrencyRepository.currencies()
     }
 }

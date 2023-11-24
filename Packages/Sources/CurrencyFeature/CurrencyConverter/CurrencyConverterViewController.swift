@@ -2,8 +2,13 @@ import UIKit
 import UIComponentKit
 import Toast
 
+/// An object that acts upon the currency rate data and the associated view to display the currency converter.
 protocol CurrencyConverterPresentable: AnyObject {
+    /// Notifies the presenter that the amount has changed.
+    /// - Parameter value: The new value of the amount as a string.
     func amountDidChange(_ value: String?)
+
+    /// Notifies the presenter that the currency selector button has been tapped.
     func didTappedCurrencySelector()
 
     /// Ask for the number of sections in a list layout.
@@ -18,9 +23,14 @@ protocol CurrencyConverterPresentable: AnyObject {
     /// Ask for a item that is specified by an index path.
     /// - Parameter indexPath: The index path that specifies the location of an item.
     /// - Returns: The data model of an item.
-    func item(at indexPath: IndexPath) -> ExchangeCurrency
+    func item(at indexPath: IndexPath) -> ExchangeCurrencyRate
+
+    /// Handles the selection of a currency symbol.
+    /// - Parameter currencySymbol: The selected currency symbol.
+    func handleSelected(currencySymbol: String)
 }
 
+/// A passive view controller that displays currency rates.
 final class CurrencyConverterViewController: UIViewController, CurrencyConverterViewable {
     // MARK: UIs
 
@@ -220,6 +230,8 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
         ) as? CurrencyConverterTableViewCell else {
             return UITableViewCell()
         }
+        let currencyRate: ExchangeCurrencyRate = presenter.item(at: indexPath)
+        cell.configure(withCurrencyRate: currencyRate)
         return cell
     }
 
@@ -234,7 +246,8 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
 // MARK: - CurrencySelectorListener
 
 extension CurrencyConverterViewController: CurrencySelectorListener {
-    func didSelect(currency: ExchangeCurrency) {
-        selectCurrencyButton.setTitle(currency.name, for: .normal)
+    func didSelect(currencyRate: ExchangeCurrencyRate) {
+        selectCurrencyButton.setTitle(currencyRate.symbol, for: .normal)
+        presenter.handleSelected(currencySymbol: currencyRate.symbol)
     }
 }
