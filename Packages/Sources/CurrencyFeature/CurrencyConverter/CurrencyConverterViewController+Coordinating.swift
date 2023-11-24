@@ -1,8 +1,8 @@
 import UIKit
 
 extension CurrencyConverterViewController: CurrencyConverterCoordinating {
-    func presentCurrencySelector() {
-        let presenter = CurrencySelectorPresenter()
+    func presentCurrencySelector(withCurrencies currencies: [ExchangeCurrency]) {
+        let presenter = CurrencySelectorPresenter(currencies: currencies)
         let viewController = CurrencySelectorViewController(presenter: presenter)
         presenter.coordinator = viewController
         presenter.view = viewController

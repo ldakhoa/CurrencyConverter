@@ -28,10 +28,8 @@ protocol CurrencySelectorViewable: AnyObject {
     func showError(_ error: Error)
 }
 
-final class CurrencySelectorPresenter: CurrencySelectorPresentable, Displaying {
+final class CurrencySelectorPresenter: CurrencySelectorPresentable {
     // MARK: Dependencies
-
-    let currencyUseCase: CurrencyUseCase
 
     /// An object manages interactions with the currency selector.
     weak var listener: CurrencySelectorListener?
@@ -45,15 +43,15 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable, Displaying {
     // MARK: Misc
 
     /// A list of currencies.
-    private(set) var currencies: [ExchangeCurrency] = []
+    private let currencies: [ExchangeCurrency]
 
     /// An asynchronous task that reload all data.
     private(set) var reloadDataTask: Task<Void, Error>?
 
     // MARK: Init
 
-    init(currencyUseCase: CurrencyUseCase = DefaultCurrencyUseCase()) {
-        self.currencyUseCase = currencyUseCase
+    init(currencies: [ExchangeCurrency]) {
+        self.currencies = currencies
     }
 
     // MARK: Deinit
@@ -65,7 +63,7 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable, Displaying {
     // MARK: CurrencySelectorPresentable
 
     func viewDidLoad() {
-        reloadData()
+//        reloadData()
     }
 
     func keywordsDidChange(_ keywords: String) {
@@ -91,30 +89,30 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable, Displaying {
 
     // MARK: Side Effects
 
-    private func reloadData() {
-        reloadDataTask?.cancel()
-        reloadDataTask = Task {
-            do {
-                updateLayout { [weak view] in view?.showLoading() }
-                let currencies = try await currencyUseCase.currencies()
-                updateLayout { [weak view] in view?.hideLoading() }
-                reloadData(withCurrencies: currencies)
-            } catch {
-                updateLayout { [weak view] in
-                    view?.hideLoading()
-                    let code = NSError.Code(rawValue: (error as NSError).code)
-                    guard code != .cancelled else { return }
-                    view?.showError(error)
-                }
-            }
-        }
-    }
+//    private func reloadData() {
+//        reloadDataTask?.cancel()
+//        reloadDataTask = Task {
+//            do {
+//                updateLayout { [weak view] in view?.showLoading() }
+//                let currencies = try await currencyUseCase.currencies()
+//                updateLayout { [weak view] in view?.hideLoading() }
+//                reloadData(withCurrencies: currencies)
+//            } catch {
+//                updateLayout { [weak view] in
+//                    view?.hideLoading()
+//                    let code = NSError.Code(rawValue: (error as NSError).code)
+//                    guard code != .cancelled else { return }
+//                    view?.showError(error)
+//                }
+//            }
+//        }
+//    }
 
-    private func reloadData(withCurrencies currencies: [ExchangeCurrency]) {
-        guard self.currencies != currencies else { return }
-        self.currencies = currencies
-        updateLayout { [weak view] in
-            view?.reloadData()
-        }
-    }
+//    private func reloadData(withCurrencies currencies: [ExchangeCurrency]) {
+//        guard self.currencies != currencies else { return }
+//        self.currencies = currencies
+//        updateLayout { [weak view] in
+//            view?.reloadData()
+//        }
+//    }
 }

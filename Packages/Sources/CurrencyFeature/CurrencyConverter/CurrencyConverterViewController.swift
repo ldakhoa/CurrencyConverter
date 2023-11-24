@@ -5,6 +5,20 @@ import Toast
 protocol CurrencyConverterPresentable: AnyObject {
     func amountDidChange(_ value: String?)
     func didTappedCurrencySelector()
+
+    /// Ask for the number of sections in a list layout.
+    /// - Returns: The number of sections in a list layout.
+    func numberOfSections() -> Int
+
+    /// Ask for the number of items in the specified section.
+    /// - Parameter section: An index number identifying a section.
+    /// - Returns: The number of items in section.
+    func numberOfItems(in section: Int) -> Int
+
+    /// Ask for a item that is specified by an index path.
+    /// - Parameter indexPath: The index path that specifies the location of an item.
+    /// - Returns: The data model of an item.
+    func item(at indexPath: IndexPath) -> ExchangeCurrency
 }
 
 final class CurrencyConverterViewController: UIViewController, CurrencyConverterViewable {
@@ -19,7 +33,10 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         view.layer.borderColor = UIColor.secondaryLabel.cgColor
         view.layer.cornerRadius = 4.0
         view.textAlignment = .right
-        view.accessibilityLabel = NSLocalizedString("Enter amount of money", comment: "A text field accessibility label")
+        view.accessibilityLabel = NSLocalizedString(
+            "Enter amount of money",
+            comment: "A text field accessibility label"
+        )
         view.isAccessibilityElement = true
         view.addTarget(self, action: #selector(onAmountChanged), for: .editingChanged)
         return view
@@ -35,6 +52,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         )
         view.setTitle("USD", for: .normal)
         view.tintColor = .label
+        view.titleLabel?.font = .preferredFont(forTextStyle: .headline)
 
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.secondaryLabel.cgColor
@@ -49,7 +67,10 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         view.contentHorizontalAlignment = .right
 
         view.accessibilityTraits = .button
-        view.accessibilityLabel = NSLocalizedString("Select to change the currency", comment: "A button accessibility label")
+        view.accessibilityLabel = NSLocalizedString(
+            "Select to change the currency",
+            comment: "A button accessibility label"
+        )
         view.isAccessibilityElement = true
         return view
     }()
@@ -60,6 +81,17 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         view.dataSource = self
         view.delegate = self
         view.keyboardDismissMode = .interactive
+        view.register(
+            CurrencyConverterTableViewCell.self,
+            forCellReuseIdentifier: CurrencyConverterTableViewCell.identifier
+        )
+        view.isAccessibilityElement = true
+        view.accessibilityLabel = NSLocalizedString(
+            "List of currency conversions",
+            comment: "A list of currency conversions label"
+        )
+        view.allowsSelection = false
+        view.separatorInset = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0) // since content view inset leading is 8
         return view
     }()
 
@@ -96,6 +128,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     override func loadView() {
         super.loadView()
         view.backgroundColor = .systemBackground
+
         view.addSubview(amountTextField)
         view.addSubview(selectCurrencyButton)
         view.addSubview(currencyConversionsTableView)
@@ -124,6 +157,8 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        title = "Currency Converter"
     }
 
     // MARK: CurrencyConverterViewable
@@ -161,15 +196,38 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+
 extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+    func numberOfSections(in tableView: UITableView) -> Int {
+        presenter.numberOfSections()
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.backgroundColor = .red
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        presenter.numberOfItems(in: section)
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        guard let cell: CurrencyConverterTableViewCell = tableView.dequeueReusableCell(
+            withIdentifier: CurrencyConverterTableViewCell.identifier,
+            for: indexPath
+        ) as? CurrencyConverterTableViewCell else {
+            return UITableViewCell()
+        }
         return cell
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        UITableView.automaticDimension
     }
 }
 
@@ -177,6 +235,6 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
 
 extension CurrencyConverterViewController: CurrencySelectorListener {
     func didSelect(currency: ExchangeCurrency) {
-        print("Selected \(currency.name)")
+        selectCurrencyButton.setTitle(currency.name, for: .normal)
     }
 }

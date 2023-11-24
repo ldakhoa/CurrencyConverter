@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CurrencyConverterCoordinating: AnyObject {
-    func presentCurrencySelector()
+    func presentCurrencySelector(withCurrencies currencies: [ExchangeCurrency])
 }
 
 protocol CurrencyConverterViewable: AnyObject {
@@ -29,6 +29,9 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     weak var view: CurrencyConverterViewable?
 
     // MARK: Misc
+
+    /// A list of currencies.
+    private(set) var currencies: [ExchangeCurrency] = []
 
     /// An asynchronous task that reload all data.
     private(set) var reloadDataTask: Task<Void, Error>?
@@ -68,7 +71,19 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     }
 
     func didTappedCurrencySelector() {
-        coordinator?.presentCurrencySelector()
+        coordinator?.presentCurrencySelector(withCurrencies: currencies)
+    }
+
+    func numberOfSections() -> Int {
+        1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        15
+    }
+
+    func item(at indexPath: IndexPath) -> ExchangeCurrency {
+        .init(name: "", symbol: "")
     }
 
     // MARK: Side Effects
@@ -77,12 +92,26 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
         reloadDataTask?.cancel()
         reloadDataTask = Task {
             do {
-                let result = try await currencyUseCase.exchangeRate()
-                print(result)
-                print(result.rates)
+//                async let exchangeRateResponse = try await currencyUseCase.exchangeRate()
+                async let currencies = try await currencyUseCase.currencies()
+                self.currencies = try await currencies
+//                print(exchangeRateResponse)
+//                print(exchangeRateResponse.rates)
             } catch {
-                print(error)
+                updateLayout { [weak view] in
+                    view?.hideLoading()
+                    let code = NSError.Code(rawValue: (error as NSError).code)
+                    guard code != .cancelled else { return }
+                    view?.showError(error)
+                }
             }
         }
+    }
+
+    /// Verify the current thread to make sure the task is always executed on the main thread.
+    /// - Parameter task: A task that updates the layout.
+    private func updateLayout(_ task: @escaping () -> Void) {
+        guard !Thread.isMainThread else { return task() }
+        DispatchQueue.main.async(execute: task)
     }
 }

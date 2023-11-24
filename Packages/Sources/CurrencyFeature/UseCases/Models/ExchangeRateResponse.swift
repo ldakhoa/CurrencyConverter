@@ -1,5 +1,7 @@
 import Foundation
 
+typealias ExchangeRate = [String: Double]
+
 /// An object abstracts the latest exchange rate received from the Open Exchange Rates API.
 struct ExchangeRateResponse: Codable {
     /// A disclaimer stating the terms and conditions of using the exchange rate data.

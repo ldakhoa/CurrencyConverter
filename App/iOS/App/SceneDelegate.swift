@@ -31,7 +31,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         let currencyConverterBuilder: CurrencyConverterBuilder = CurrencyConverterBuilder()
         let viewController = currencyConverterBuilder.build()
-        window.rootViewController = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
 }
