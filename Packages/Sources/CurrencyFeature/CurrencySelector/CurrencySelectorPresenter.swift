@@ -18,6 +18,7 @@ protocol CurrencySelectorViewable: AnyObject {
     func reloadData()
 }
 
+/// An object that acts upon the currency rate data and the associated view to display the currency selector.
 final class CurrencySelectorPresenter: CurrencySelectorPresentable {
     // MARK: Dependencies
 
@@ -35,6 +36,9 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable {
     /// A list of currencies.
     private let currencyRates: [ExchangeCurrencyRate]
 
+    /// A list of filtered currencies.
+    private(set) var filteredCurrencyRates: [ExchangeCurrencyRate] = []
+
     /// An asynchronous task that reload all data.
     private(set) var reloadDataTask: Task<Void, Error>?
 
@@ -42,6 +46,7 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable {
 
     init(currencyRates: [ExchangeCurrencyRate]) {
         self.currencyRates = currencyRates
+        self.filteredCurrencyRates = currencyRates
     }
 
     // MARK: Deinit
@@ -55,23 +60,29 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable {
     func viewDidLoad() {}
 
     func keywordsDidChange(_ keywords: String) {
-
+        filteredCurrencyRates = keywords.isEmpty ? currencyRates : currencyRates.filter {
+            $0.name.range(of: keywords, options: .caseInsensitive) != nil ||
+            $0.symbol.range(of: keywords, options: .caseInsensitive) != nil
+        }
+        DispatchQueue.main.async {
+            self.view?.reloadData()
+        }
     }
 
     func numberOfSections() -> Int {
-        currencyRates.isEmpty ? 0 : 1
+        filteredCurrencyRates.isEmpty ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
-        currencyRates.count
+        filteredCurrencyRates.count
     }
 
     func item(at indexPath: IndexPath) -> ExchangeCurrencyRate {
-        currencyRates[indexPath.row]
+        filteredCurrencyRates[indexPath.row]
     }
 
     func didSelectCurrency(at indexPath: IndexPath) {
-        listener?.didSelect(currencyRate: currencyRates[indexPath.row])
+        listener?.didSelect(currencyRate: filteredCurrencyRates[indexPath.row])
         coordinator?.close()
     }
 }

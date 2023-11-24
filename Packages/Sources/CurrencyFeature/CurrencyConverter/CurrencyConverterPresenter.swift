@@ -3,6 +3,8 @@ import Common
 
 /// An object takes the responsibility of routing through the app.
 protocol CurrencyConverterCoordinating: AnyObject {
+    /// Present the currency selector scene.
+    /// - Parameter currencyRates: A list of currency rates.
     func presentCurrencySelector(withCurrencyRates currencyRates: [ExchangeCurrencyRate])
 }
 
