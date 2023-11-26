@@ -28,6 +28,10 @@ protocol CurrencyConverterPresentable: AnyObject {
     /// Handles the selection of a currency symbol.
     /// - Parameter currencySymbol: The selected currency symbol.
     func handleSelected(currencySymbol: String)
+
+    /// Notify that the currency keywords did change.
+    /// - Parameter keywords: The textual content of the search criteria.
+    func currencyKeywordsDidChange(_ keywords: String)
 }
 
 /// A passive view controller that displays currency rates.
@@ -36,8 +40,8 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
 
     private(set) lazy var amountTextField: InsetTextField = {
         let view = InsetTextField(inset: 8.0)
-        view.text = "10.0"
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.placeholder = "Enter amount of money"
         view.keyboardType = .decimalPad
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.secondaryLabel.cgColor
@@ -60,9 +64,12 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
             action: #selector(onCurrencySelector),
             for: .touchUpInside
         )
+        view.isEnabled = false
         view.setTitle("USD", for: .normal)
         view.tintColor = .label
         view.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        view.setTitleColor(.label, for: .normal)
+        view.setTitleColor(.secondaryLabel, for: .disabled)
 
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.secondaryLabel.cgColor
@@ -90,7 +97,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
-        view.keyboardDismissMode = .interactive
+        view.keyboardDismissMode = .onDrag
         view.register(
             CurrencyConverterTableViewCell.self,
             forCellReuseIdentifier: CurrencyConverterTableViewCell.identifier
@@ -102,6 +109,23 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         )
         view.allowsSelection = false
         view.separatorInset = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0) // since content view inset leading is 8
+        return view
+    }()
+
+    private(set) lazy var searchCurrencyTextField: InsetTextField = {
+        let view = InsetTextField(inset: 8.0)
+        view.placeholder = "Search currency (Name or Symbol)"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.secondaryLabel.cgColor
+        view.layer.cornerRadius = 4.0
+        view.font = .preferredFont(forTextStyle: .callout)
+        view.addTarget(self, action: #selector(onSearchCurrency), for: .editingChanged)
+        view.accessibilityLabel = NSLocalizedString(
+            "Search currency (Name or Symbol)",
+            comment: "A text field accessibility label"
+        )
+        view.isAccessibilityElement = true
         return view
     }()
 
@@ -142,6 +166,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         view.addSubview(amountTextField)
         view.addSubview(selectCurrencyButton)
         view.addSubview(currencyConversionsTableView)
+        view.addSubview(searchCurrencyTextField)
         view.addSubview(activityIndicatorView)
 
         NSLayoutConstraint.activate([
@@ -154,6 +179,11 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
             selectCurrencyButton.trailingAnchor.constraint(equalTo: amountTextField.trailingAnchor),
             selectCurrencyButton.widthAnchor.constraint(equalToConstant: 80),
             selectCurrencyButton.heightAnchor.constraint(equalToConstant: 40),
+
+            searchCurrencyTextField.centerYAnchor.constraint(equalTo: selectCurrencyButton.centerYAnchor),
+            searchCurrencyTextField.leadingAnchor.constraint(equalTo: amountTextField.leadingAnchor),
+            searchCurrencyTextField.trailingAnchor.constraint(equalTo: selectCurrencyButton.leadingAnchor, constant: -8),
+            searchCurrencyTextField.heightAnchor.constraint(equalToConstant: 35),
 
             currencyConversionsTableView.topAnchor.constraint(equalTo: selectCurrencyButton.bottomAnchor, constant: 12),
             currencyConversionsTableView.leadingAnchor.constraint(equalTo: amountTextField.leadingAnchor),
@@ -193,6 +223,10 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         toast.show(haptic: .error)
     }
 
+    func shouldEnableSelectCurrencyButton(_ enabled: Bool) {
+        selectCurrencyButton.isEnabled = enabled
+    }
+
     // MARK: Side Effects
 
     @objc
@@ -202,7 +236,13 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
 
     @objc
     private func onCurrencySelector() {
+        view.endEditing(true)
         presenter.didTappedCurrencySelector()
+    }
+
+    @objc
+    private func onSearchCurrency(_ textField: UITextField) {
+        presenter.currencyKeywordsDidChange(textField.text ?? "")
     }
 }
 
@@ -248,6 +288,7 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
 extension CurrencyConverterViewController: CurrencySelectorListener {
     func didSelect(currencyRate: ExchangeCurrencyRate) {
         selectCurrencyButton.setTitle(currencyRate.symbol, for: .normal)
+        searchCurrencyTextField.text = nil
         presenter.handleSelected(currencySymbol: currencyRate.symbol)
     }
 }

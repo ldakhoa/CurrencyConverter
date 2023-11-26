@@ -22,6 +22,10 @@ protocol CurrencyConverterViewable: AnyObject {
     /// Show an error over the current context.
     /// - Parameter error: A type representing an error value.
     func showError(_ error: Error)
+
+    /// Toggle state of select currency button
+    /// - Parameter enabled: A Boolean value indicating whether the control is in the enabled state.
+    func shouldEnableSelectCurrencyButton(_ enabled: Bool)
 }
 
 /// An object that acts upon the currency rate data and the associated view to display the currency converter.
@@ -41,6 +45,9 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
 
     /// A list of currency rates.
     private(set) var exchangeCurrencyRates: [ExchangeCurrencyRate] = []
+
+    /// A list of filtered currencies.
+    private(set) var filteredCurrencyRates: [ExchangeCurrencyRate] = []
 
     /// An object that temporarily stores transient key-value pairs that are subject to eviction when resources are low or expired.
     let cache = Cache<String, [ExchangeCurrencyRate]>()
@@ -105,20 +112,31 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     }
 
     func numberOfSections() -> Int {
-        exchangeCurrencyRates.isEmpty ? 0 : 1
+        let isEmpty = filteredCurrencyRates.isEmpty
+        view?.shouldEnableSelectCurrencyButton(!isEmpty)
+        return isEmpty ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
-        exchangeCurrencyRates.count
+        filteredCurrencyRates.count
     }
 
     func item(at indexPath: IndexPath) -> ExchangeCurrencyRate {
-        exchangeCurrencyRates[indexPath.row]
+        filteredCurrencyRates[indexPath.row]
     }
 
     func handleSelected(currencySymbol: String) {
         selectedCurrencySymbol = currencySymbol
         reloadData(withAmount: lastAmount)
+    }
+
+    func currencyKeywordsDidChange(_ keywords: String) {
+        filteredCurrencyRates = keywords.isEmpty ? exchangeCurrencyRates : exchangeCurrencyRates.filter {
+            $0.name.range(of: keywords, options: .caseInsensitive) != nil ||
+            $0.symbol.range(of: keywords, options: .caseInsensitive) != nil
+        }
+        view?.shouldEnableSelectCurrencyButton(!filteredCurrencyRates.isEmpty)
+        updateLayout { [weak view] in view?.reloadData() }
     }
 
     // MARK: Side Effects
@@ -140,12 +158,12 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
             do {
                 updateLayout { [weak view] in view?.showLoading() }
                 async let exchangeRateResponse = try await currencyUseCase.exchangeRate()
-                async let currencies = try await currencyUseCase.currencies()
+                async let currenciesResponse = try await currencyUseCase.currencies()
                 updateLayout { [weak view] in view?.hideLoading() }
 
                 let defaultExchangeCurrencyRates: [ExchangeCurrencyRate] = makeDefaultExchangeCurrencyRates(
                     from: try await exchangeRateResponse,
-                    andCurrencyResponse: try await currencies
+                    andCurrencyResponse: try await currenciesResponse
                 )
                 cache.insert(defaultExchangeCurrencyRates, forKey: Constant.exchangeCurrencyRateKey)
 
@@ -206,6 +224,7 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
         }
 
         self.exchangeCurrencyRates = convertedRates
+        self.filteredCurrencyRates = convertedRates
         updateLayout { [weak view] in view?.reloadData() }
     }
 

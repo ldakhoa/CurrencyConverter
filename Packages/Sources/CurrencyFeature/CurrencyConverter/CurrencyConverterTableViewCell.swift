@@ -12,7 +12,6 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
 
     private(set) lazy var nameLabel: UILabel = {
         let view = UILabel()
-        view.text = "US Dollar"
         view.textColor = .label
         view.font = .preferredFont(forTextStyle: .callout)
         return view
@@ -20,7 +19,6 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
 
     private(set) lazy var amountLabel: UILabel = {
         let view = UILabel()
-        view.text = "130.10 USD"
         view.textColor = .label
         view.font = .preferredFont(forTextStyle: .headline)
         return view
@@ -48,7 +46,8 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
     // MARK: Side Effect
 
     func configure(withCurrencyRate currencyRate: ExchangeCurrencyRate) {
-        amountLabel.text = "\(currencyRate.rate) \(currencyRate.symbol)"
+        let roundedAmount = round(currencyRate.rate * 100) / 100.0
+        amountLabel.text = "\(roundedAmount) \(currencyRate.symbol)"
         nameLabel.text = currencyRate.name
     }
 
