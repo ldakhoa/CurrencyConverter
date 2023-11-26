@@ -35,7 +35,9 @@ let package = Package(
 		),
 		.testTarget(
 			name: "CurrencyFeatureTests",
-			dependencies: ["CurrencyFeature"]
+			dependencies: [
+                "CurrencyFeature"
+            ]
 		),
 
         .target(
