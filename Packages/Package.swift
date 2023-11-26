@@ -19,6 +19,10 @@ let package = Package(
     ],
 	targets: [
         .target(name: "Common"),
+        .testTarget(
+            name: "CommonTests",
+            dependencies: ["Common"]
+        ),
 
 		.target(
 			name: "CurrencyFeature",

@@ -165,7 +165,11 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
                     from: try await exchangeRateResponse,
                     andCurrencyResponse: try await currenciesResponse
                 )
-                cache.insert(defaultExchangeCurrencyRates, forKey: Constant.exchangeCurrencyRateKey)
+                cache.insert(
+                    defaultExchangeCurrencyRates,
+                    forKey: Constant.exchangeCurrencyRateKey,
+                    expiredAt: Date(timeIntervalSinceNow: 1800)
+                )
 
                 // Reload data with selected currency symbol and default rates
                 reloadData(
