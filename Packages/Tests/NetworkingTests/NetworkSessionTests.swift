@@ -1,7 +1,7 @@
 import XCTest
 @testable import Networking
 
-// swiftlint:disable force_unwrapping
+// swiftlint:disable force_unwrapping force_cast
 final class NetworkSessionTests: XCTestCase {
     // MARK: Misc
 
@@ -208,4 +208,4 @@ extension NetworkSessionTests {
         StubbedURLProtocol.reset()
     }
 }
-// swiftlint:enable force_unwrapping
+// swiftlint:enable force_unwrapping force_cast

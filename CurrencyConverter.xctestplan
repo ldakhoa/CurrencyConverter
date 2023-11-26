@@ -1,0 +1,45 @@
+{
+  "configurations" : [
+    {
+      "id" : "ABCAFABD-14DD-4FCE-AC40-D572FFEB7E0F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages",
+        "identifier" : "CurrencyFeatureTests",
+        "name" : "CurrencyFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages",
+        "identifier" : "CommonTests",
+        "name" : "CommonTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Packages",
+        "identifier" : "NetworkingTests",
+        "name" : "NetworkingTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CurrencyConverter.xcodeproj",
+        "identifier" : "6A56367B2B133E5300AB9933",
+        "name" : "CurrencyConverterTests"
+      }
+    }
+  ],
+  "version" : 1
+}

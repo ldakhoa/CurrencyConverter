@@ -34,25 +34,16 @@ final class CurrencySelectorPresenter: CurrencySelectorPresentable {
     // MARK: Misc
 
     /// A list of currencies.
-    private let currencyRates: [ExchangeCurrencyRate]
+    let currencyRates: [ExchangeCurrencyRate]
 
     /// A list of filtered currencies.
     private(set) var filteredCurrencyRates: [ExchangeCurrencyRate] = []
 
-    /// An asynchronous task that reload all data.
-    private(set) var reloadDataTask: Task<Void, Error>?
-
     // MARK: Init
 
-    init(currencyRates: [ExchangeCurrencyRate]) {
+    init(currencyRates: [ExchangeCurrencyRate] = []) {
         self.currencyRates = currencyRates
         self.filteredCurrencyRates = currencyRates
-    }
-
-    // MARK: Deinit
-
-    deinit {
-        reloadDataTask?.cancel()
     }
 
     // MARK: CurrencySelectorPresentable

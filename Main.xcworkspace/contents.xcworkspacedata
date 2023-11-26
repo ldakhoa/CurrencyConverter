@@ -5,6 +5,9 @@
       location = "group:Packages">
    </FileRef>
    <FileRef
+      location = "group:CurrencyConverter.xctestplan">
+   </FileRef>
+   <FileRef
       location = "group:App/CurrencyConverter.xcodeproj">
    </FileRef>
 </Workspace>

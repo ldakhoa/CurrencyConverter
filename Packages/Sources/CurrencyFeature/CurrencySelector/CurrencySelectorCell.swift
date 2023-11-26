@@ -13,6 +13,7 @@ final class CurrencySelectorCell: UITableViewCell {
         let view = UILabel()
         view.numberOfLines = 0
         view.lineBreakMode = .byWordWrapping
+        view.accessibilityLabel = NSLocalizedString("Name of currency", comment: "An accessibility label")
         return view
     }()
 
@@ -20,6 +21,7 @@ final class CurrencySelectorCell: UITableViewCell {
         let view = UILabel()
         view.textAlignment = .right
         view.font = .systemFont(ofSize: 17, weight: .medium)
+        view.accessibilityLabel = NSLocalizedString("Name of currency symbol", comment: "An accessibility label")
         return view
     }()
 
