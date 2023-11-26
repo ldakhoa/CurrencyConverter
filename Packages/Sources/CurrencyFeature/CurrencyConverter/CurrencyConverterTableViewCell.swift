@@ -14,6 +14,7 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
         let view = UILabel()
         view.textColor = .label
         view.font = .preferredFont(forTextStyle: .callout)
+        view.accessibilityLabel = NSLocalizedString("Name of currency", comment: "An accessibility label")
         return view
     }()
 
@@ -21,6 +22,7 @@ final class CurrencyConverterTableViewCell: UITableViewCell {
         let view = UILabel()
         view.textColor = .label
         view.font = .preferredFont(forTextStyle: .headline)
+        view.accessibilityLabel = NSLocalizedString("Amount of currency", comment: "An accessibility label")
         return view
     }()
 
