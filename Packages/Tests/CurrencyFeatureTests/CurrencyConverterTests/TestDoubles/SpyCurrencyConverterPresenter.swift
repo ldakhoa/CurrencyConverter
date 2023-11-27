@@ -39,7 +39,7 @@ final class SpyCurrencyConverterPresenter: CurrencyConverterPresentable {
     var numberOfSectionsCalled: Bool {
         numberOfSectionsCallsCount > 0
     }
-    var numberOfSectionsReturnValue: Int!
+    var numberOfSectionsReturnValue: Int! = 1
     var numberOfSectionsClosure: (() -> Int)?
 
     func numberOfSections() -> Int {
@@ -55,7 +55,7 @@ final class SpyCurrencyConverterPresenter: CurrencyConverterPresentable {
     }
     var numberOfItemsInReceivedSection: Int?
     var numberOfItemsInReceivedInvocations: [Int] = []
-    var numberOfItemsInReturnValue: Int!
+    var numberOfItemsInReturnValue: Int! = 1
     var numberOfItemsInClosure: ((Int) -> Int)?
 
     func numberOfItems(in section: Int) -> Int {
