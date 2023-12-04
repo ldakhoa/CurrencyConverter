@@ -67,9 +67,16 @@ final class CurrencyConverterPresenter: CurrencyConverterPresentable {
     // MARK: Init
 
     /// Initiate a presenter that acts upon the currency rate data and the associated view to display the currency converter.
-    /// - Parameter currencyUseCase: An object that manages the weather data and apply business rules to achive a use case.
-    init(currencyUseCase: CurrencyUseCase = DefaultCurrencyUseCase()) {
+    /// - Parameters:
+    ///   - currencyUseCase: An object that manages the weather data and apply business rules to achive a use case.
+    ///   - exchangeCurrencyRates: A list of currency rates.
+    init(
+        currencyUseCase: CurrencyUseCase = DefaultCurrencyUseCase(),
+        exchangeCurrencyRates: [ExchangeCurrencyRate] = []
+    ) {
         self.currencyUseCase = currencyUseCase
+        self.exchangeCurrencyRates = exchangeCurrencyRates
+        self.filteredCurrencyRates = exchangeCurrencyRates
     }
 
     // MARK: Deinit

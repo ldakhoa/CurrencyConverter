@@ -42,7 +42,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         let view = InsetTextField(inset: 8.0)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.placeholder = "Enter amount of money"
-        view.keyboardType = .decimalPad
+        view.keyboardType = .numberPad
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.secondaryLabel.cgColor
         view.layer.cornerRadius = 4.0
@@ -53,6 +53,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         )
         view.isAccessibilityElement = true
         view.addTarget(self, action: #selector(onAmountChanged), for: .editingChanged)
+        view.delegate = self
         return view
     }()
 
@@ -280,6 +281,20 @@ extension CurrencyConverterViewController: UITableViewDataSource, UITableViewDel
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
         UITableView.automaticDimension
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension CurrencyConverterViewController: UITextFieldDelegate {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
     }
 }
 

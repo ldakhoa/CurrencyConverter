@@ -36,11 +36,6 @@ struct DefaultRemoteCurrencyRepository: RemoteCurrencyRepository {
             for: API.currencies,
             decoder: JSONDecoder()
         )
-//        let response: ExchangeCurrencyResponse = try await session.data(
-//            for: API.currencies,
-//            decoder: JSONDecoder()
-//        )
-//        return response.map { ExchangeCurrency(name: $0.value, symbol: $0.key) }
     }
 }
 
