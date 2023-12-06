@@ -1,8 +1,8 @@
 import Foundation
 
-struct DummyError: LocalizedError, Equatable {
+struct DummyError: LocalizedError, Equatable, Codable {
 
-    let id = UUID()
+    var id = UUID()
 
     var errorDescription: String? {
         id.uuidString

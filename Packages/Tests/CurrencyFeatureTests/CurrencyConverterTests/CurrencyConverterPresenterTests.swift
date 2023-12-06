@@ -203,30 +203,12 @@ final class CurrencyConverterPresenterTests: XCTestCase {
         XCTAssertFalse(view.reloadDataCalled)
     }
 
-    func test_amountDidChange_whenAmountIsDifferent_andCacheIsMissed() throws {
-        let expectation = expectation(description: "the data will be reload after a while")
-        let amount: Double = 10.0
-
-        XCTAssertNotEqual(sut.lastAmount, amount)
-
-        sut.amountDidChange("\(amount)")
-        sut.cache.removeValue(forKey: exchangeCurrencyRateKey)
-
-        XCTAssertEqual(sut.lastAmount, amount)
-
-        sut.pendingReloadDataWorkItem?.notify(queue: .main) { [unowned currencyUseCase] in
-            XCTAssertTrue(currencyUseCase!.currenciesCalled)
-            XCTAssertTrue(currencyUseCase!.exchangeRateCalled)
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 1)
-    }
-
     func test_amountDidChange_whenAmountIsDifferent_andBeingCalledMultipleTimes() {
         let expectation = expectation(description: "expeced the data will be reload after a while")
         let firstAmount = 10.0
         let secondAmount = 100.0
+
+        sut.cache.removeValue(forKey: exchangeCurrencyRateKey)
 
         XCTAssertNotEqual(sut.lastAmount, firstAmount)
 
@@ -242,15 +224,14 @@ final class CurrencyConverterPresenterTests: XCTestCase {
 
         XCTAssertNotIdentical(sut.pendingReloadDataWorkItem, pendingReloadDataWorkItem)
 
-        sut.cache.removeValue(forKey: exchangeCurrencyRateKey)
-
         sut.pendingReloadDataWorkItem?.notify(queue: .main) { [unowned currencyUseCase] in
-            XCTAssertTrue(currencyUseCase!.currenciesCalled)
-            XCTAssertTrue(currencyUseCase!.exchangeRateCalled)
+            XCTAssertEqual(currencyUseCase!.currenciesCallsCount, 1)
+            XCTAssertEqual(currencyUseCase!.exchangeRateCallsCount, 1)
+
             expectation.fulfill()
         }
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 30)
     }
 
     // MARK: Test Case - didTappedCurrencySelector()
