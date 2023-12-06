@@ -238,8 +238,10 @@ final class CurrencyConverterPresenterTests: XCTestCase {
 
     func test_didTappedCurrencySelector() throws {
         sut.didTappedCurrencySelector()
+
         XCTAssertTrue(coordinator.presentCurrencySelectorWithCurrencyRatesCalled)
         XCTAssertEqual(coordinator.presentCurrencySelectorWithCurrencyRatesCallsCount, 1)
+        XCTAssertEqual(coordinator.presentCurrencySelectorWithCurrencyRatesReceivedCurrencyRates, sut.exchangeCurrencyRates)
     }
 
     // MARK: Test Case - numberOfSection()
