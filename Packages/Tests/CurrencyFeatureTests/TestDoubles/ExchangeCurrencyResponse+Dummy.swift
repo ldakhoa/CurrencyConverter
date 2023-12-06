@@ -9,6 +9,7 @@ import Foundation
 
 // swiftlint:disable force_try
 // swiftlint:disable force_unwrapping
+// swiftlint:disable line_length
 extension Dictionary where Key == String, Value == String {
     static var dummy: Self {
         let data = """
@@ -21,3 +22,4 @@ extension Dictionary where Key == String, Value == String {
 }
 // swiftlint:enable force_try
 // swiftlint:enable force_unwrapping
+// swiftlint:enable line_length

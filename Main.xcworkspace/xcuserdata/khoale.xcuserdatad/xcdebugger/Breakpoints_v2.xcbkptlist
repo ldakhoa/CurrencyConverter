@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "ECACFD9E-0AE4-444C-B80E-160E47D60D52"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Packages/Sources/CurrencyConverterFeature/UseCases/RemoteCurrencyConverterRepository.swift"

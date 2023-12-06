@@ -14,10 +14,10 @@ final class SpyCurrencyUseCase: CurrencyUseCase {
     var exchangeRateClosure: (() throws -> ExchangeRateResponse)?
 
     func exchangeRate() throws -> ExchangeRateResponse {
+        exchangeRateCallsCount += 1
         if let error = exchangeRateThrowableError {
             throw error
         }
-        exchangeRateCallsCount += 1
         return try exchangeRateClosure.map({ try $0() }) ?? exchangeRateReturnValue
     }
 
@@ -32,10 +32,10 @@ final class SpyCurrencyUseCase: CurrencyUseCase {
     var currenciesClosure: (() throws -> ExchangeCurrencyResponse)?
 
     func currencies() throws -> ExchangeCurrencyResponse {
+        currenciesCallsCount += 1
         if let error = currenciesThrowableError {
             throw error
         }
-        currenciesCallsCount += 1
         return try currenciesClosure.map({ try $0() }) ?? currenciesReturnValue
     }
 }

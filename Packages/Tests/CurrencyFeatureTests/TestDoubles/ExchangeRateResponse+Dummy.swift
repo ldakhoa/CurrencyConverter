@@ -8,6 +8,9 @@
 import Foundation
 @testable import CurrencyFeature
 
+// swiftlint:disable force_try
+// swiftlint:disable force_unwrapping
+// swiftlint:disable line_length
 extension ExchangeRateResponse {
     static var dummy: Self {
         let data = """
@@ -17,5 +20,7 @@ extension ExchangeRateResponse {
         let result = try! decoder.decode(Self.self, from: data)
         return result
     }
-
 }
+// swiftlint:enable force_try
+// swiftlint:enable force_unwrapping
+// swiftlint:enable line_length
